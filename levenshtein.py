@@ -26,6 +26,10 @@ with Settings(max_examples=1000):
     def test_distance_between_string_and_itself(string):
         assert Levenshtein(string, string) == 0
 
+    @given(text())
+    def test_distance_between_string_and_empty_string(string):
+        assert Levenshtein(string, "") == len(string)
+
     @given(text(), text())
     def test_distance_between_two_strings(a, b):
         assume(a != b)
@@ -35,6 +39,12 @@ with Settings(max_examples=1000):
     def test_commutative(a, b):
         assume(a != b)
         assert Levenshtein(a, b) == Levenshtein(b, a)
+
+    @given(text(), text())
+    def test_only_deletions_needed(a, additions):
+        b = "".join([char for tpl in map(None, list(a), list(additions)) for char in tpl if char])
+        print "FOO", b
+        assert Levenshtein(a, b) == len(additions)
 
     @given(text(), text())
     def test_concatenation(a, b):
