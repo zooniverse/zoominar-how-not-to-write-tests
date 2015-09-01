@@ -28,6 +28,7 @@ class Queue:
 
 
 
+
 from hypothesis import given, assume, Settings
 from hypothesis.strategies import text, integers
 from hypothesis.stateful import RuleBasedStateMachine, Bundle, rule
@@ -64,4 +65,3 @@ class QueueRules(RuleBasedStateMachine):
         assert queue.size() == len(elements)
 
 TestQueues = QueueRules.TestCase
-

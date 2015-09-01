@@ -43,7 +43,6 @@ with Settings(max_examples=1000):
     @given(text(), text())
     def test_only_deletions_needed(a, additions):
         b = "".join([char for tpl in map(None, list(a), list(additions)) for char in tpl if char])
-        print "FOO", b
         assert Levenshtein(a, b) == len(additions)
 
     @given(text(), text())
