@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+
+require 'tty-command'
+require 'pastel'
+
+TIMEOUT = 2
+
+problem = File.dirname(ARGV[0])
+cmd = TTY::Command.new printer: :null
+pastel = Pastel.new
+
+puts "Running"
+Dir[File.join(problem, "*.in")].each do |filename|
+  start = Time.now
+  out, err = cmd.run(ARGV[0], in: filename)
+  duration = Time.now - start
+
+  expected = File.open(filename.gsub(/in$/, "out")) { |f| f.read }
+
+  if out.strip == expected.strip && duration < TIMEOUT
+    puts pastel.black.on_green("OK #{filename}")
+  elsif duration >= 1
+    puts pastel.on_blue("Too slow #{filename}")
+    exit 1
+  else
+    puts pastel.on_red("Wrong #{filename}")
+    exit 1
+  end
+end
+
+#out, err = cmd.run("ls -al")
+

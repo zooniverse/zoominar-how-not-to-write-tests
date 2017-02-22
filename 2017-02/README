@@ -1,0 +1,2 @@
+bundle install
+bundle exec rerun -p "**/*" -x bin/test example/solution.rb
